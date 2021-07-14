@@ -6,6 +6,9 @@ import java.lang.reflect.Proxy;
  * @author liuxiaoliu66
  */
 public class Anna2 {
+
+    public final static int NO_INTERNET = 1;
+
     private String mBaseUrl;
 
     Anna2() {
