@@ -88,6 +88,9 @@ public final class Observable<T> {
 
     private FormBody bodyMapBuild() {
         FormBody.Builder formBody = new FormBody.Builder();
+        if (mBody == null) {
+            return formBody.build();
+        }
         for (Map.Entry<String, String> set : mBody.entrySet()) {
             formBody.add(set.getKey(), set.getValue());
         }

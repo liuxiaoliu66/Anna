@@ -60,7 +60,10 @@ public final class NetworkHandler implements InvocationHandler {
             if (annotation instanceof Post)
                 return handlerPost(method, (Post) annotation, args);
             if (annotation instanceof Delete)
-                return null;
+                return handleDelete(method, (Delete) annotation, args);
+            if (annotation instanceof Put)
+                return handlePut(method, (Put) annotation, args);
+            return null;
         }
         return null;
     }
