@@ -7,7 +7,7 @@ import java.lang.reflect.Proxy;
  */
 public class Anna2 {
 
-    public final static int NO_INTERNET = 1;
+    public final static int UNKNOWN = -1;
 
     private String mBaseUrl;
 

@@ -39,7 +39,7 @@ final class CallUtils {
             @EverythingIsNonNull
             public void onFailure(okhttp3.Call call, IOException e) {
                 e.printStackTrace();
-                Observable.mHandler.post(() -> callback.onFailure(Anna2.NO_INTERNET));
+                Observable.mHandler.post(() -> callback.onFailure(Anna2.UNKNOWN));
             }
 
             @Override
