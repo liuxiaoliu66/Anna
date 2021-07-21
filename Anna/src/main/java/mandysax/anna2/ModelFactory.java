@@ -22,10 +22,15 @@ import mandysax.anna2.utils.JsonUtils;
  */
 @SuppressWarnings("All")
 public final class ModelFactory {
-    /*
-     *模型工厂
+    /**
+     * @param modelClass 需要构建的实体类
+     * @param content    获取到的json数据
+     * @param <T>        实体类的泛型类型
+     * @return 构建好的实体类
+     * @throws IllegalAccessException 报错类型
+     * @throws InstantiationException 报错类型
+     * @throws JSONException          报错类型
      */
-
     public static <T> T create(Class<T> modelClass, String content) throws IllegalAccessException, InstantiationException, JSONException {
         T object = modelClass.newInstance();
         if (content == null) {

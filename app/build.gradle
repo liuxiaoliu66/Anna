@@ -27,5 +27,5 @@ android {
 }
 
 dependencies {
-implementation project(path: ':Anna')
+    implementation project(path: ':Anna')
 }

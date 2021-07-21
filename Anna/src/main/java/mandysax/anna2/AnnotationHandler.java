@@ -18,7 +18,7 @@ import mandysax.anna2.observable.Observable;
 import mandysax.anna2.utils.GenericUtils;
 
 @SuppressWarnings("ALL")
-public final class NetworkHandler implements InvocationHandler {
+final class AnnotationHandler implements InvocationHandler {
 
     private final Anna2 mAnna;
 
@@ -47,7 +47,7 @@ public final class NetworkHandler implements InvocationHandler {
      */
     private Class mReturnGenericClazz;
 
-    NetworkHandler(Anna2 anna) {
+    AnnotationHandler(Anna2 anna) {
         mAnna = anna;
     }
 
@@ -63,9 +63,8 @@ public final class NetworkHandler implements InvocationHandler {
                 return handleDelete(method, (Delete) annotation, args);
             if (annotation instanceof Put)
                 return handlePut(method, (Put) annotation, args);
-            return null;
         }
-        return null;
+        throw new NullPointerException("No annotation request type");
     }
 
     /**

@@ -14,4 +14,5 @@ public interface ResponseBody {
      * @param code 错误码
      */
     void onFailure(int code);
+
 }

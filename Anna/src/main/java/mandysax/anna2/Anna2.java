@@ -30,7 +30,7 @@ public class Anna2 {
     @SuppressWarnings("All")
     public final <T> T newProxy(Class<T> clazz)//构建代理类
     {
-        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new NetworkHandler(this));
+        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new AnnotationHandler(this));
     }
 
 }

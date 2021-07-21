@@ -19,7 +19,7 @@ import okhttp3.Request;
  */
 public final class Observable<T> {
 
-    final Handler mHandler = new Handler(Looper.getMainLooper());
+    static final Handler mHandler = new Handler(Looper.getMainLooper());
 
     final Class<T> mModel;
     /**
@@ -101,14 +101,23 @@ public final class Observable<T> {
         return mBody.values().isEmpty();
     }
 
+    /**
+     * @param responseBody 事件回调
+     */
     public void set(ResponseBody responseBody) {
         CallUtils.responseBodyCall(this, responseBody);
     }
 
+    /**
+     * @param callback 事件回调
+     */
     public void set(Callback<T> callback) {
         CallUtils.callBackCall(this, callback);
     }
 
+    /**
+     * 取消当前请求
+     */
     public void cancel() {
         if (!mCall.isCanceled()) {
             mCall.cancel();

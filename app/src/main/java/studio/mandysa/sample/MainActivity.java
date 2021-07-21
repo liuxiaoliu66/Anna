@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Anna2 anna2 = Anna2.build().baseUrl("xxxx");
-        anna2.newProxy(Api.class).login("xxxx","xxxx").set(new Callback<LoginModel>() {
+        anna2.newProxy(Api.class).login("xxxx", "xxxx").set(new Callback<LoginModel>() {
             @Override
             public void onResponse(boolean loaded, LoginModel loginModel) {
                 System.out.println(loginModel.token);

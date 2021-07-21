@@ -3,7 +3,6 @@ package mandysax.anna2;
 /**
  * @author liuxiaoliu66
  */
-
 public enum TYPE {
     /**
      * 以get的方式进行请求

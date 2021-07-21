@@ -1,5 +1,4 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.Sample" parent="@android:style/Theme.Material.Light.NoActionBar">
-    </style>
+    <style name="Theme.Sample" parent="@android:style/Theme.Material.Light.NoActionBar"></style>
 </resources>
