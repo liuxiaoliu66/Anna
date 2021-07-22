@@ -90,15 +90,13 @@ final class AnnotationHandler implements InvocationHandler {
                 mUrl += query.value() + "=" + params[i];
                 m++;
             } else if (annotations2[i][0] instanceof Body) {
-                if (mBody == null)
-                    mBody = new HashMap<>();
+                if (mBody == null) mBody = new HashMap<>();
                 Body body = (Body) annotations2[i][0];
-                mBody.put(body.value(), params[i].toString());
+                mBody.put(body.value(), params[i] == null ? "" : params[i].toString());
             } else if (annotations2[i][0] instanceof Header) {
-                if (mHeader == null)
-                    mHeader = new HashMap<>();
+                if (mHeader == null) mHeader = new HashMap<>();
                 Header header = (Header) annotations2[i][0];
-                mHeader.put(header.value(), params[i].toString());
+                mHeader.put(header.value(), params[i] == null ? "" : params[i].toString());
             }
         }
 
