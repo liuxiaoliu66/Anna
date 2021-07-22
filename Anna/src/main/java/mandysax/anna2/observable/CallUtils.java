@@ -1,8 +1,10 @@
 package mandysax.anna2.observable;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 import mandysax.anna2.Anna2;
@@ -12,7 +14,6 @@ import mandysax.anna2.callback.ResponseBody;
 import mandysax.anna2.utils.JsonUtils;
 import okhttp3.Callback;
 import okhttp3.Response;
-import okhttp3.internal.annotations.EverythingIsNonNull;
 
 /**
  * @author liuxiaoliu66
@@ -36,21 +37,18 @@ final class CallUtils {
     public static <T> void callBackCall(Observable<T> observable, mandysax.anna2.callback.Callback<T> callback) {
         observable.mCall.enqueue(new Callback() {
             @Override
-            @EverythingIsNonNull
-            public void onFailure(okhttp3.Call call, IOException e) {
+            public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
                 e.printStackTrace();
                 Observable.mHandler.post(() -> callback.onFailure(Anna2.UNKNOWN));
             }
 
             @Override
-            @EverythingIsNonNull
-            public void onResponse(okhttp3.Call call, Response response) throws IOException {
+            public void onResponse(@NotNull okhttp3.Call call, @NotNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     Observable.mHandler.post(() -> callback.onFailure(response.code()));
                     return;
                 }
-                assert response.body() != null;
-                AtomicReference<String> data = new AtomicReference<>(response.body().string());
+                AtomicReference<String> data = new AtomicReference<>(Objects.requireNonNull(response.body()).string());
                 Observable.mHandler.post(() -> {
                     try {
                         if (observable.mPath != null) {
