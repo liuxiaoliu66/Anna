@@ -38,13 +38,6 @@ allprojects {
 * 在项目 app 模块下的 `build.gradle` 文件中加入
 
 ```groovy
-android {
-    compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
-    }
-}
-
 dependencies {
     implementation 'com.gitee.liuxiaoliu66:anna:1.3.0'
 }
