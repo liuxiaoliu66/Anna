@@ -1,9 +1,11 @@
 package mandysax.anna2.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Field;
 
 public final class FieldUtils {
-    public static void setField(Field field, Object main, Object content) {
+    public static void setField(@NotNull Field field, Object main, Object content) {
         boolean lock = field.isAccessible();
         if (!lock)
             field.setAccessible(true);

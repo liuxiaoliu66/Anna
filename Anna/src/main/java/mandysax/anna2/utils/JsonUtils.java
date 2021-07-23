@@ -9,10 +9,14 @@ import org.json.JSONTokener;
  * @author liuxiaoliu66
  */
 public final class JsonUtils {
-    public static String Parsing(String content, String... key) throws JSONException {
+    public static String Parsing(String content, String... key) {
         if (key == null) return content;
         for (String name : key) {
-            content = new JSONTokener(content).nextValue() instanceof JSONObject ? new JSONObject(content).optString(name) : new JSONArray(content).optJSONObject(0).optString(name);
+            try {
+                content = new JSONTokener(content).nextValue() instanceof JSONObject ? new JSONObject(content).optString(name) : new JSONArray(content).optJSONObject(0).optString(name);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
         }
         return content;

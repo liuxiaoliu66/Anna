@@ -1,5 +1,7 @@
-package mandysax.anna2;
+package mandysax.anna2.factory;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,28 +22,35 @@ import mandysax.anna2.utils.JsonUtils;
 /**
  * @author liuxiaoliu66
  */
-@SuppressWarnings("All")
-public final class ModelFactory {
-    /**
-     * @param modelClass 需要构建的实体类
-     * @param content    获取到的json数据
-     * @param <T>        实体类的泛型类型
-     * @return 构建好的实体类
-     * @throws IllegalAccessException 报错类型
-     * @throws InstantiationException 报错类型
-     * @throws JSONException          报错类型
-     */
-    public static <T> T create(Class<T> modelClass, String content) throws IllegalAccessException, InstantiationException, JSONException {
-        T object = modelClass.newInstance();
+public final class DefaultConverterFactory implements ConverterFactory.Factory {
+
+    private DefaultConverterFactory() {
+    }
+
+    private final HashMap<String, String> pathMap = new HashMap<>();
+
+    @NotNull
+    @Contract(" -> new")
+    public static DefaultConverterFactory create() {
+        return new DefaultConverterFactory();
+    }
+
+    @NotNull
+    @Override
+    public <T> T create(@NotNull Class<T> modelClass, String content) {
+        T object;
+        try {
+            object = modelClass.newInstance();
+        } catch (IllegalAccessException | InstantiationException e) {
+            throw new RuntimeException("Unable to create a new instance of " + modelClass);
+        }
         if (content == null) {
             return object;
         }
-        HashMap<String, String> pathMap = new HashMap<>(object.getClass().getDeclaredFields().length);
         for (Field field : object.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(Path.class)) {
                 Path path = field.getAnnotation(Path.class);
-                assert path != null;
-                pathMap.put(field.getName(), JsonUtils.Parsing(content, path.value().split("/")));
+                pathMap.put(field.getName(), JsonUtils.Parsing(content, path != null ? path.value().split("/") : null));
             }
         }
         for (Field field : object.getClass().getDeclaredFields()) {
@@ -57,16 +66,15 @@ public final class ModelFactory {
                 } else if (field.getType() == long.class) {
                     FieldUtils.setField(field, object, parsingLong(name, json));
                 } else if (field.getType() == List.class || field.getType() == ArrayList.class) {
+                    @SuppressWarnings("All") Class<Objects> classType = (Class<Objects>) GenericUtils.getGenericType(field);
+                    if (classType == null) continue;
                     JSONArray array = parsingJsonArray(name, json);
-                    Class<?> classType = GenericUtils.getGenericType(field);
-                    ArrayList list = new ArrayList();
-                    if (classType != null) {
-                        if (array != null) {
-                            int i = 0;
-                            while (i < array.length()) {
-                                list.add(ModelFactory.create(classType, array.getString(i)));
-                                i++;
-                            }
+                    if (array == null) continue;
+                    ArrayList<Objects> list = new ArrayList<>();
+                    for (int i = 0; i < array.length(); i++) {
+                        try {
+                            list.add(create(classType, array.getString(i)));
+                        } catch (JSONException ignored) {
                         }
                     }
                     FieldUtils.setField(field, object, list);
@@ -78,32 +86,39 @@ public final class ModelFactory {
         return object;
     }
 
-    private static JSONObject getNextValue(String in) throws JSONException {
-        return new JSONTokener(in).nextValue() instanceof JSONObject ? new JSONObject(in) : new JSONArray(in).optJSONObject(0);
+    private @NotNull
+    JSONObject getNextValue(String in) {
+        try {
+            return new JSONTokener(in).nextValue() instanceof JSONObject ? new JSONObject(in) : new JSONArray(in).optJSONObject(0);
+        } catch (JSONException e) {
+            return new JSONObject();
+        }
     }
 
-    private static boolean parsingBoolean(String name, String json) throws JSONException {
+    private boolean parsingBoolean(String name, String json) {
         return getNextValue(json).optBoolean(name);
     }
 
-    private static int parsingInt(String name, String json) throws JSONException {
+    private int parsingInt(String name, String json) {
         return getNextValue(json).optInt(name);
     }
 
-    private static long parsingLong(String name, String json) throws JSONException {
+    private long parsingLong(String name, String json) {
         return getNextValue(json).optLong(name);
     }
 
-    private static String parsingString(String name, String json) throws JSONException {
+    @NotNull
+    private String parsingString(String name, String json) {
         return getNextValue(json).optString(name);
     }
 
-    private static Object parsingObject(Field field, String json) throws JSONException, IllegalAccessException, InstantiationException {
-        return ModelFactory.create(field.getType(), json);
+    private JSONArray parsingJsonArray(String name, String json) {
+        return getNextValue(json).optJSONArray(name);
     }
 
-    private static JSONArray parsingJsonArray(String name, String json) throws JSONException {
-        return getNextValue(json).optJSONArray(name);
+    @NotNull
+    private Object parsingObject(@NotNull Field field, String json) {
+        return create(field.getType(), json);
     }
 
 }

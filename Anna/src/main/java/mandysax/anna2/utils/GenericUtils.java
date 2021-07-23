@@ -1,5 +1,8 @@
 package mandysax.anna2.utils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -13,7 +16,8 @@ import java.lang.reflect.Type;
  */
 public final class GenericUtils {
 
-    public static Class<?> getGenericType(Method method) {
+    @Nullable
+    public static Class<?> getGenericType(@NotNull Method method) {
         Type type = method.getGenericReturnType();
         if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
@@ -25,7 +29,8 @@ public final class GenericUtils {
         return null;
     }
 
-    public static Class<?> getGenericType(Field field) {
+    @Nullable
+    public static Class<?> getGenericType(@NotNull Field field) {
         Type genericsFieldType = field.getGenericType();
         if (genericsFieldType instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) genericsFieldType;

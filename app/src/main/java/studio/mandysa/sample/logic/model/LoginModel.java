@@ -1,4 +1,4 @@
-package studio.mandysa.sample;
+package studio.mandysa.sample.logic.model;
 
 import mandysax.anna2.annotation.Value;
 
