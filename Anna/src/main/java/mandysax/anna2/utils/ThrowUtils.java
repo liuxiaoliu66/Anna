@@ -22,6 +22,12 @@ public final class ThrowUtils {
 
     @NotNull
     @Contract(" -> new")
+    public static IllegalStateException headersAlreadyExists() {
+        return new IllegalStateException("@Headers & @Header cannot coexist,And only one @Headers can exist");
+    }
+
+    @NotNull
+    @Contract(" -> new")
     public static IllegalStateException returnGenericClazzIsNull() {
         return new IllegalStateException("Could not find the generic type that needs to be returned");
     }
@@ -48,6 +54,12 @@ public final class ThrowUtils {
     @Contract(" -> new")
     public static NullPointerException noAnnotationRequestType() {
         return new NullPointerException("No annotation request type");
+    }
+
+    @NotNull
+    @Contract(" -> new")
+    public static IllegalStateException converterFactoryAdded() {
+        return new IllegalStateException("ConverterFactory has been added");
     }
 
 }

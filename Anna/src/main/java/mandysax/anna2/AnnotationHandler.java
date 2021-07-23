@@ -13,6 +13,7 @@ import mandysax.anna2.annotation.BodyMap;
 import mandysax.anna2.annotation.Delete;
 import mandysax.anna2.annotation.Get;
 import mandysax.anna2.annotation.Header;
+import mandysax.anna2.annotation.Headers;
 import mandysax.anna2.annotation.Path;
 import mandysax.anna2.annotation.Post;
 import mandysax.anna2.annotation.Put;
@@ -94,19 +95,28 @@ final class AnnotationHandler implements InvocationHandler {
             if (annotations[i][0] instanceof Query) {
                 Query query = (Query) annotations[i][0];
                 (mQuery == null ? mQuery = new HashMap<>() : mQuery).put(query.value(), params[i] == null ? null : params[i].toString());
-            } else if (annotations[i][0] instanceof Body) {
-                Body body = (Body) annotations[i][0];
-                (mBody == null ? mBody = new HashMap<>() : mBody).put(body.value(), params[i] == null ? null : params[i].toString());
-            } else if (annotations[i][0] instanceof Header) {
-                Header header = (Header) annotations[i][0];
-                (mHeader == null ? mHeader = new HashMap<>() : mHeader).put(header.value(), params[i] == null ? null : params[i].toString());
-            } else if (annotations[i][0] instanceof BodyMap) {
-                if (mHeader != null) throw ThrowUtils.bodyMapAlreadyExists();
-                mHeader = (HashMap<String, String>) params[i];
-            } else if (annotations[i][0] instanceof QueryMap) {
-                if (mQuery != null) throw ThrowUtils.bodyMapAlreadyExists();
+            }
+            if (annotations[i][0] instanceof QueryMap) {
+                if (mQuery != null) throw ThrowUtils.queryMapAlreadyExists();
                 mQuery = (HashMap<String, String>) params[i];
             }
+            if (annotations[i][0] instanceof Body) {
+                Body body = (Body) annotations[i][0];
+                (mBody == null ? mBody = new HashMap<>() : mBody).put(body.value(), params[i] == null ? null : params[i].toString());
+            }
+            if (annotations[i][0] instanceof BodyMap) {
+                if (mBody != null) throw ThrowUtils.bodyMapAlreadyExists();
+                mBody = (HashMap<String, String>) params[i];
+            }
+            if (annotations[i][0] instanceof Header) {
+                Header header = (Header) annotations[i][0];
+                (mHeader == null ? mHeader = new HashMap<>() : mHeader).put(header.value(), params[i] == null ? null : params[i].toString());
+            }
+            if (annotations[i][0] instanceof Headers) {
+                if (mHeader != null) throw ThrowUtils.headersAlreadyExists();
+                mHeader = (HashMap<String, String>) params[i];
+            }
+
         }
     }
 

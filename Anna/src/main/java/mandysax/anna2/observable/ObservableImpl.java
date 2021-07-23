@@ -73,8 +73,6 @@ public final class ObservableImpl<T> implements Observable<T> {
             case PUT:
                 mBuilder.put(bodyMapBuild());
                 break;
-            default:
-                throw new IllegalStateException("No such request type in anna:" + type);
         }
         mCall = new OkHttpClient().newCall(mBuilder.build());
     }

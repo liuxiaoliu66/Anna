@@ -18,6 +18,7 @@ import mandysax.anna2.annotation.Value;
 import mandysax.anna2.utils.FieldUtils;
 import mandysax.anna2.utils.GenericUtils;
 import mandysax.anna2.utils.JsonUtils;
+import mandysax.anna2.utils.ThrowUtils;
 
 /**
  * @author liuxiaoliu66
@@ -42,7 +43,7 @@ public final class DefaultConverterFactory implements ConverterFactory.Factory {
         try {
             object = modelClass.newInstance();
         } catch (IllegalAccessException | InstantiationException e) {
-            throw new RuntimeException("Unable to create a new instance of " + modelClass);
+            throw ThrowUtils.newInstanceError(modelClass);
         }
         if (content == null) {
             return object;

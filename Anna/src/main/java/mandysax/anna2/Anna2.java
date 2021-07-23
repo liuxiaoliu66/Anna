@@ -5,8 +5,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Proxy;
 
-import mandysax.anna2.factory.DefaultConverterFactory;
 import mandysax.anna2.factory.ConverterFactory;
+import mandysax.anna2.factory.DefaultConverterFactory;
+import mandysax.anna2.utils.ThrowUtils;
 
 /**
  * @author liuxiaoliu66
@@ -38,7 +39,7 @@ public class Anna2 {
     }
 
     public Anna2 addConverterFactory(ConverterFactory.Factory factory) {
-        if (mFactory != null) throw new IllegalStateException("ConverterFactory has been added");
+        if (mFactory != null) throw ThrowUtils.converterFactoryAdded();
         mFactory = factory;
         return this;
     }
