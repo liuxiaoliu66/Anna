@@ -39,7 +39,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.gitee.liuxiaoliu66:anna:1.3.0'
+    implementation 'com.gitee.liuxiaoliu66:anna:1.3.2'
 }
 ```
 
